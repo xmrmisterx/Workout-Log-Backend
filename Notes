@@ -5,3 +5,14 @@ the home page? wait a minute, the backend doesn't render anything right? we shou
 so I think the current code is fine as is?
 - if the current backend code is fine, let's create an app for it, so we can test it with our frontend heroku local and put the app
 address into the frontend server variable.
+-ok, so we needed to add a Procfile, which we had forgot, and download mysql, which downloaded node modules, so we had to add a 
+.gitignore file as well, but then we tried it, and the home page gave us a result, and the reset table reset the info, so it seemed to
+work
+-let's make this an app and set its url as the server URL for the front end page: so the commands are "heroku login -i" "git init"
+"git add ." "gi commit -m '[commit message]'", "heroku create" to make app
+- our APP ADDRESS is: https://cryptic-dusk-31004.herokuapp.com/ and APP GIT ADDRESS is: https://git.heroku.com/cryptic-dusk-31004.git
+- now, we need to do "git push [app git address] master" to deploy files to heroku cloud app
+-interesting, so we keep getting CORS rejections from the frontend, and we go look at the assignment files, and we only had the CORS
+stuff in the backend, and it's still here, so it should work, we noticed we still have our code for local instead of heroku deployment
+in this backend server.js file, so we need to recreate our app, this is the issue with small errors when we can't test it locally, we
+have to waste a lot time updating git and creating a new app

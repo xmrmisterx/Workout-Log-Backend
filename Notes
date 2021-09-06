@@ -27,3 +27,13 @@ end getting it? it must be a CORS error?
 - so let's try to test the backend and get the get request to return normally, and also maybe the reset table get request, ok, so we
 are definitely getting an "Internal Server Error" with the backend, so let's test it on local host again, ok yeah, so the local host
 looks correct and is returning "{"results":"[]"}", a blank results obj, since the table is empty
+- we uploaded it again and still getting internal server error, that's pretty weird, why does it work in local host but not on cloud?
+-interesting, so we Google around and it says to check the error logs, and the error logs says, in addition to the "Error: No default engine was specified and no extension was provided." we also have "Error: Handshake inactivity timeout", so we google this second
+error and the solutions are to change the timeout property of the mySql to add more time? We also see a console log that says that the get request was received, so the server is getting the GET request from the frontend, but something is going wrong when it's deployed,
+but when local host it works? can we do "node server.js" in flip1 so we can see the errors in real time to test?
+-for reference, the WORKOUT LOG FRONTEND is: "https://arcane-wildwood-69561.herokuapp.com/"
+-ok, we need to get this flip1 server up and see if it works this way, and why or why not
+-ok, so we finally were able to set it up to work with the flip server, we forgot that the frontend is hardcoded and doesn't save unless
+we git push, so it keeps trying to access the backend server that doesn't work. with that said, with the frontend on the engr site and
+the backend with flip1... server, the server does work, and we've also seen it, well, we've actually never seen it on the server site, so we need to do something with the heroku backend site, bc it works on localhost and it works on flip1, does it have something to do
+with the way mySQL is set up? let's google "how to set up mySql with heroku" and maybe look at the mysql module in CS290 course?

@@ -44,6 +44,7 @@ const getAllData = (res) => {
 }
 
 app.get('/',function(req,res,next){
+  console.log("get request received by server");
   var context = {};
   mysql.pool.query(getAllQuery, (err, rows, fields) => {
     if(err){
@@ -56,6 +57,7 @@ app.get('/',function(req,res,next){
 });
 
 app.post('/',function(req,res,next){
+  console.log("post request received by server");
   var {name, reps, weight, unit, date, id} = req.body;
   mysql.pool.query(
     insertQuery, 
@@ -71,6 +73,7 @@ app.post('/',function(req,res,next){
 });
 
 app.delete('/',function(req,res,next){
+  console.log("delete request received by server");
   var {id} = req.body;
   var context = {};
   mysql.pool.query(deleteQuery, [id], (err, result) => {
@@ -83,6 +86,7 @@ app.delete('/',function(req,res,next){
 });
 
 app.put('/',function(req,res,next){
+  console.log("put request received by server");
   var context = {};
   var {name, reps, weight, unit, date, id} = req.body;
   mysql.pool.query(updateQuery,
@@ -98,6 +102,7 @@ app.put('/',function(req,res,next){
 });
 
 app.get('/reset-table',function(req,res,next){
+  console.log("get request for table reset received by server");
   var context = {};
   mysql.pool.query(dropTableQuery, function(err){
     mysql.pool.query(makeTableQuery, function(err){

@@ -16,3 +16,14 @@ work
 stuff in the backend, and it's still here, so it should work, we noticed we still have our code for local instead of heroku deployment
 in this backend server.js file, so we need to recreate our app, this is the issue with small errors when we can't test it locally, we
 have to waste a lot time updating git and creating a new app
+-we are getting an "error at JSON pos 0" error, so we're gonna test the backend here, see what each does, and then make sure it works
+-wow, it seems like we're going backwards here. we're note even getting a JSON error. When the site tries to call the server, it isn't
+working for whatever reason. We changed to server URL to our local host back end, but the connection is refusing, not sure why we can't do this TBH
+-ok, so changing from http//localhost to just localhost:5125 seemed to work, however, now we are getting a CORS rejection. ok, so what
+if we require CORS and enable CORS for the front end, that should remove the CORS rejection right?
+-ok, so is our server working? I mean, we tested the GET request, and it worked, so why can't we request it? Is it just a CORS error?
+but the CORS error dissapeared ugh. I mean, our server GET request is working, we've seen it give the response, so why isn't our front
+end getting it? it must be a CORS error?
+- so let's try to test the backend and get the get request to return normally, and also maybe the reset table get request, ok, so we
+are definitely getting an "Internal Server Error" with the backend, so let's test it on local host again, ok yeah, so the local host
+looks correct and is returning "{"results":"[]"}", a blank results obj, since the table is empty

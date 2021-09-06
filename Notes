@@ -43,4 +43,32 @@ the app right there (ugh, this would have been useful so our names aren't so ran
 -ok, so reading further, it seems like Heroku natively uses Postgres (some other database?), so that's why we need to add the clearDB
 addon, bc it allows the mySQL database to work on Heroku
 -***alright, so I guess we'll follow the steps from one of the articles and see hwo things go... 1) install the clearDB addon to our app
-"heroku addons:create cleardb:ignite" 2) configure mySQL connection "heroku config | grep CLEARDB_DATABASE_URL" which gives us a CLEARDB DATABASE URL, this specific one being : "mysql://ba78fb274f2846:e7c84551@us-cdbr-east-04.cleardb.com/heroku_2502c22c3414591?reconnect=true" then we want to run "heroku config:set DATABASE_URL='[cleardb database url]'". Lol, we initially get a "name is invalid" error bc we forgot the "DATABASE_URL" part of the command (well we didn't notice it) 3) configure node.js to connect clearDB mySQL to Heroku... in our database URL, there are 4 parts of the URL that contains the "username", "password", "host", "database", so we need to set those parameters. For our url 'mysql://ba78fb274f2846:e7c84551@us-cdbr-east-04.cleardb.com/heroku_2502c22c3414591?reconnect=true', "username"= ba78fb274f2846, "password"= e7c84551, "host"= us-cdbr-east-04.cleardb.com and "database"= heroku_2502c22c3414591 ... We need to open our dbcon.js file and update these values (so I guess we remove the old values). Now it says before creating our mySQL table on clearDB, we should update our files on git, so add, commit, push to master
+"heroku addons:create cleardb:ignite" 2) configure mySQL connection "heroku config | grep CLEARDB_DATABASE_URL" which gives us a CLEARDB
+ DATABASE URL, this specific one being : 
+ "mysql://ba78fb274f2846:e7c84551@us-cdbr-east-04.cleardb.com/heroku_2502c22c3414591?reconnect=true" then we want to run "heroku 
+ config:set DATABASE_URL='[cleardb database url]'". Lol, we initially get a "name is invalid" error bc we forgot the "DATABASE_URL" part
+of the command (well we didn't notice it) 3) configure node.js to connect clearDB mySQL to Heroku... in our database URL, there are 4
+parts of the URL that contains the "username", "password", "host", "database", so we need to set those parameters. For our url 
+'mysql://ba78fb274f2846:e7c84551@us-cdbr-east-04.cleardb.com/heroku_2502c22c3414591?reconnect=true', "username"= ba78fb274f2846 
+"password"= e7c84551 "host"= us-cdbr-east-04.cleardb.com and "database"= heroku_2502c22c3414591 ... We need to open our dbcon.js file
+and update these values (so I guess we remove the old values). Now it says before creating our mySQL table on clearDB, we should 
+update our files on git, so add, commit, push to master (lol I don't think we saved our files before pushing) 4) create mySQL table 
+on clearDB (hmm how do we do this with our own table, let's look at the maketable function?) First, we need to log into mySQL with 
+those 4 pieces of info "mysql --host=us-cdbr-east-04.cleardb.com --user=ba78fb274f2846 --password=e7c84551 
+--reconnect heroku_2502c22c3414591" Interesting, so we copy and paste, and it takes a long time, and when we finally do it, it says
+"lost connection to mariaDB server", so then we keep doing it, and the connection is fine, but then it says "table 'workout' already
+exists" so I guess, not sure where this database is, I guess it's in the mySQL database, it already exists, so don't need to do it, 
+but it didn't exist yet in the tutorial, which is why they added it...  we can check our table with "DESCRIBE [table name];" so 
+"DESCRIBE workout;", and it does come up and looks fine, this mariaDB thing is very weird, everytime we even take some time, it says
+we lost connection when we submit, then we submit again, then it tries to log in, then we submit again, and it finally works, kinda dumb.
+5) now it says to test it on local, which should work, so we had to switch to the local port, but yeah, it did work for the regular get
+request and the table reset... it does say it won't work on heroku app yet, so let's try the steps to get it to work on the app, ok, so
+it says to test the heroku app with "heroku run node server.js", which is something we've never done, I guess this command is like the 
+"node server.js" on node, but it runs on heroku cloud? so its up on a localhost, but when we go there, nothing happens lol, it's just 
+spinning the wheel, which isn't good bc we expect something? I guess we're supposed to go to our frontend, so let's do that? actually,
+when we type in our heroku backend, it does shoot back the results now, so we just need to go to the front end and try it I guess
+- YES! while running the local host, it is working with our frontend heroku app! that's progess! now let's upload this backend and see
+if everything works? or let's test all the commands first? ok, all the commands work, so great, now we just need to clean things up and 
+upload the backend and make sure everything works again. the tutorial does note some possible errors and ways to fix them, so it's good
+to bookmark that page, and if we wanted to restart the heroku server we can do "heroku restart" without having to reupload the app? not
+sure

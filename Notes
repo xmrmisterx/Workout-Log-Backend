@@ -72,3 +72,5 @@ if everything works? or let's test all the commands first? ok, all the commands 
 upload the backend and make sure everything works again. the tutorial does note some possible errors and ways to fix them, so it's good
 to bookmark that page, and if we wanted to restart the heroku server we can do "heroku restart" without having to reupload the app? not
 sure
+-note that we can also push with "git push heroku master" using "heroku" for the app name (this is a little faster than copying and 
+pasting the random name)

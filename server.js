@@ -33,6 +33,8 @@ const makeTableQuery = `CREATE TABLE workout(
 
 // Unit of 0 is lbs and unit of 1 is kgs
 
+// gets table data function
+
 const getAllData = (res) => { 
   mysql.pool.query(getAllQuery, (err, rows, fields) => {
     if (err){
@@ -43,8 +45,9 @@ const getAllData = (res) => {
   })
 }
 
+// get request to get data
+
 app.get('/',function(req,res,next){
-  // console.log("get request received by server");
   var context = {};
   mysql.pool.query(getAllQuery, (err, rows, fields) => {
     if(err){
@@ -56,8 +59,9 @@ app.get('/',function(req,res,next){
   });
 });
 
+// post request to insert data
+
 app.post('/',function(req,res,next){
-  // console.log("post request received by server");
   var {name, reps, weight, unit, date, id} = req.body;
   mysql.pool.query(
     insertQuery, 
@@ -72,8 +76,9 @@ app.post('/',function(req,res,next){
   );
 });
 
+// delete request to delete row
+
 app.delete('/',function(req,res,next){
-  // console.log("delete request received by server");
   var {id} = req.body;
   var context = {};
   mysql.pool.query(deleteQuery, [id], (err, result) => {
@@ -85,8 +90,9 @@ app.delete('/',function(req,res,next){
   });
 });
 
+// put request to edit row
+
 app.put('/',function(req,res,next){
-  // console.log("put request received by server");
   var context = {};
   var {name, reps, weight, unit, date, id} = req.body;
   mysql.pool.query(updateQuery,
@@ -100,6 +106,8 @@ app.put('/',function(req,res,next){
     res.send(context);
   });
 });
+
+// get request to reset table
 
 app.get('/reset-table',function(req,res,next){
   var context = {};

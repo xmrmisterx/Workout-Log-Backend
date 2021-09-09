@@ -7,12 +7,4 @@ var pool = mysql.createPool({
   database        : 'heroku_2502c22c3414591',
 });
 
-// var pool = mysql.createPool({
-//   connectionLimit : 10,
-//   host            : 'classmysql.engr.oregonstate.edu',
-//   user            : 'cs290_nguyenbo',
-//   password        : '8248',
-//   database        : 'cs290_nguyenbo',
-// });
-
 module.exports.pool = pool;

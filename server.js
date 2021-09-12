@@ -2,6 +2,7 @@ const { urlencoded } = require('body-parser');
 var express = require('express');
 var mysql = require('./dbcon.js');
 var CORS = require('cors');
+var axios = require('axios');
 
 var app = express();
 
@@ -32,6 +33,66 @@ const makeTableQuery = `CREATE TABLE workout(
                         date DATE);`;
 
 // Unit of 0 is lbs and unit of 1 is kgs
+
+// set variables for image scraper
+
+var item_number = 0;
+var img_url = '';
+var query_str = '';
+
+// get request for image scraper
+
+app.get('/scraper/:str', (req, res) => {
+
+  // set query string
+
+  query_str = req.params.str;
+
+  (async () => {
+    try {
+
+      // get item number
+
+      const response = await axios.get("https://en.wikipedia.org/w/api.php?action=query&prop=pageprops&titles=" + query_str + "&format=json&formatversion=2");
+      item_number = response.data.query.pages[0].pageprops.wikibase_item;
+
+    } catch (error) {
+      console.log(error.response);
+    }
+
+    try {
+
+      // get image name
+
+      const response = await axios.get("https://www.wikidata.org/w/api.php?action=wbgetclaims&property=P18&entity=" + item_number + "&format=json");
+      let image_name = response.data.claims.P18[0].mainsnak.datavalue.value;
+
+      // replace spaces in image name with underscores
+
+      let processed_image_name = "";
+
+      for (let i=0; i <image_name.length; i++) {
+        curr_letter = image_name[i];
+        if (curr_letter == " "){
+          curr_letter = "_";
+        }
+        processed_image_name += curr_letter;
+      }
+
+      // image url is wiki site plus image name
+
+      img_url = "https://commons.wikimedia.org/w/thumb.php?width=400&f=" + processed_image_name;
+
+    } catch (error) {
+      console.log(error.response);
+    }
+
+    // send image url
+
+    res.send(img_url);
+
+  })();
+});
 
 // gets table data function
 

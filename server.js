@@ -106,6 +106,12 @@ const getAllData = (res) => {
   })
 }
 
+// create function to ping server every 30 mins to prevent Heroku app from sleeping (every 5 minutes is 300000 ms)
+
+setInterval(function() {
+  https.get("https://cryptic-dusk-31004.herokuapp.com");
+}, 1800000);
+
 // get request to get data
 
 app.get('/',function(req,res,next){

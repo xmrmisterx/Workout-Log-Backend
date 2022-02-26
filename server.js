@@ -47,7 +47,7 @@ const getProductsData = (res) => {
 
 // get products table data route
 
-app.get('/getProductsData',function(req,res,next){
+app.get('/get-products-data',function(req,res,next){
   var context = {};
   mysql.pool.query(getProductsQuery, (err, rows, fields) => {
     if(err){
@@ -61,7 +61,7 @@ app.get('/getProductsData',function(req,res,next){
 
 // reset products table route (deletes and recreates products table)
 
-app.get('/resetProductsTable',function(req,res,next){
+app.get('/reset-products-table',function(req,res,next){
   mysql.pool.query(dropProductsTableQuery, function(err){
     mysql.pool.query(makeProductsTableQuery, function(err){
       res.send("Products table reset...");
@@ -71,7 +71,7 @@ app.get('/resetProductsTable',function(req,res,next){
 
 // add row to products table route
 
-app.post('/addProducts',function(req,res,next){
+app.post('/add-product',function(req,res,next){
   var {productID, manufacturerID, productName, price, quantity} = req.body;
   mysql.pool.query(
     insertProductsQuery, 

@@ -81,3 +81,8 @@ code now, but the products database is up.
 -*** to run the local host, do "heroku create"
 -we need to test this, so let's do the CREATE call as well, by adding that and then calling those creates to add to our database
 so that we can test the displaying code...
+-holy shit, we kept trying "git push heroku master" and got this error "error: src refspec master does not match any.
+error: failed to push some refs to 'https://git.heroku.com/cryptic-dusk-31004.git'" and it turns out, they changed the master named branches to main, so the correct call to push was "git push heroku main", so dumb lol
+-ok, let's finally test the insert into database on this Advanced rest client... Lol, so we run a test form and get application
+error, nice, so we go to test it, and yeah, it's not working... hmmm, I thought this was working locally? Oh yeah, we have to 
+comment out the local part of the port! 

@@ -74,3 +74,10 @@ to bookmark that page, and if we wanted to restart the heroku server we can do "
 sure
 -note that we can also push with "git push heroku master" using "heroku" for the app name (this is a little faster than copying and 
 pasting the random name)
+
+-ok, so we're back here again, for the CS340 project, bc node is annoying. Now, we're looking for info for the Products table, but
+it doesn't exist, so I guess we have to create it? Ok, so it looks like this is working now. Now what? We'll want to code our own
+code now, but the products database is up. 
+-*** to run the local host, do "heroku create"
+-we need to test this, so let's do the CREATE call as well, by adding that and then calling those creates to add to our database
+so that we can test the displaying code...

@@ -8,31 +8,85 @@ var app = express();
 
 // set local port for testing
 
-// app.set('port', 5125);
+app.set('port', 5125);
 
 // set heroku port for deployment
 
-var port = process.env.PORT || 8080;
-app.set('port', port);
+// var port = process.env.PORT || 8080;
+// app.set('port', port);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(CORS());
 
-const getAllQuery = 'SELECT * FROM workout';
-const insertQuery = "INSERT INTO workout (`name`, `reps`, `weight`, `unit`, `date`) VALUES (?, ?, ?, ?, ?)";
-const updateQuery = "UPDATE workout SET name=?, reps=?, weight=?, unit=?, date=? WHERE id=?";
-const deleteQuery = "DELETE FROM workout WHERE id=?";
-const dropTableQuery = "DROP TABLE IF EXISTS workout";
-const makeTableQuery = `CREATE TABLE workout(
-                        id INT PRIMARY KEY AUTO_INCREMENT,
-                        name VARCHAR(255) NOT NULL,
-                        reps INT,
-                        weight INT,
-                        unit BOOLEAN, 
-                        date DATE);`;
+/* CS340 PROJECT CODE */
 
-// Unit of 0 is lbs and unit of 1 is kgs
+const dropProductsTableQuery = "DROP TABLE IF EXISTS `Products`";
+const makeProductsTableQuery = `CREATE TABLE Products (
+                                productID int(11) NOT NULL,
+                                manufacturerID int(11) DEFAULT NULL,
+                                productName varchar(255) NOT NULL,
+                                price decimal(10,2) NOT NULL,
+                                quantity int(3) NOT NULL 
+                                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;`;
+
+const getProductsQuery = 'SELECT * FROM Products';
+const insertProductsQuery = "INSERT INTO Products (`manufacturerID`, `productName`, `price`, `quantity`) VALUES (?, ?, ?, ?)";
+
+// function to get products data
+
+const getProductsData = (res) => { 
+  mysql.pool.query(getProductsQuery, (err, rows, fields) => {
+    if (err){
+      next(err);
+      return;
+    }
+    res.json({ "rows": rows });
+  })
+}
+
+// get products table data route
+
+app.get('/getProductsData',function(req,res,next){
+  var context = {};
+  mysql.pool.query(getProductsQuery, (err, rows, fields) => {
+    if(err){
+      next(err);
+      return;
+    }
+    context.results = JSON.stringify(rows);
+    res.send(context);
+  });
+});
+
+// reset products table route (deletes and recreates products table)
+
+app.get('/resetProductsTable',function(req,res,next){
+  mysql.pool.query(dropProductsTableQuery, function(err){
+    mysql.pool.query(makeProductsTableQuery, function(err){
+      res.send("Products table reset...");
+    })
+  });
+});
+
+// add row to products table route
+
+app.post('/addProducts',function(req,res,next){
+  var {productID, manufacturerID, productName, price, quantity} = req.body;
+  mysql.pool.query(
+    insertProductsQuery, 
+    [productID, manufacturerID, productName, price, quantity],
+    (err, result) => {
+      if(err){
+        next(err);
+        return;
+      }
+      getProductsData(res); 
+    }
+  );
+});
+
+/* IMAGE SCRAPER FOR MOUNTAIN SITE CODE */
 
 // set variables for image scraper
 
@@ -93,6 +147,23 @@ app.get('/scraper/:str', (req, res) => {
 
   })();
 });
+
+/* WORKOUT LOG CODE */
+
+const getAllQuery = 'SELECT * FROM workout';
+const insertQuery = "INSERT INTO workout (`name`, `reps`, `weight`, `unit`, `date`) VALUES (?, ?, ?, ?, ?)";
+const updateQuery = "UPDATE workout SET name=?, reps=?, weight=?, unit=?, date=? WHERE id=?";
+const deleteQuery = "DELETE FROM workout WHERE id=?";
+const dropTableQuery = "DROP TABLE IF EXISTS workout";
+const makeTableQuery = `CREATE TABLE workout(
+                        id INT PRIMARY KEY AUTO_INCREMENT,
+                        name VARCHAR(255) NOT NULL,
+                        reps INT,
+                        weight INT,
+                        unit BOOLEAN, 
+                        date DATE);`;
+
+// Unit of 0 is lbs and unit of 1 is kgs
 
 // gets table data function
 
